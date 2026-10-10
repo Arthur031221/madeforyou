@@ -18,3 +18,5 @@ Each tool runs in the browser and needs no account:
 | [Dollopify](https://github.com/Arthur031221/dollopify) | Split a restaurant bill by what each person ate |
 
 The page is a single static `index.html` with no build step. Open it locally to preview.
+
+Assisted by Claude/Codex.
