@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1080" width="1080" height="1080">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ff7a59"/>
+      <stop offset="1" stop-color="#ffb443"/>
+    </linearGradient>
+  </defs>
+  <rect width="1080" height="1080" fill="url(#bg)"/>
+  <text x="540" y="610" text-anchor="middle" font-family="'Noto Sans TC','Noto Sans CJK TC','PingFang TC',sans-serif"
+        font-weight="900" font-size="330" fill="#fffaf3" letter-spacing="10">為你</text>
+  <text x="540" y="760" text-anchor="middle" font-family="'Noto Sans','Helvetica Neue',Arial,sans-serif"
+        font-weight="700" font-size="74" fill="#fffaf3" fill-opacity="0.92" letter-spacing="6">made for you</text>
+  <path d="M880 230 l16 46 46 16 -46 16 -16 46 -16 -46 -46 -16 46 -16z" fill="#fffaf3"/>
+</svg>
