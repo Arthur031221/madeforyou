@@ -104,13 +104,13 @@
   .tool.has-pet { overflow: visible; position: relative; }
   .tool.has-pet .media { border-radius: 18px 18px 0 0; }
   .tool .media.fill.top img { object-position: 50% 85%; }
-  .pet { position: absolute; top: -60px; right: 26px; width: 92px; height: 60px; padding: 0; border: 0; background: none; cursor: pointer; overflow: hidden; z-index: 3; -webkit-tap-highlight-color: transparent; }
-  .tool .pet img { position: absolute; left: 0; bottom: 0; width: 92px; height: 53px; max-width: none; background: transparent; aspect-ratio: auto; display: block; pointer-events: none; transition: transform .35s cubic-bezier(.3, 1.5, .5, 1); }
-  .pet:hover img { transform: translateY(-6px); }
-  .pet.duck img { transform: translateY(58px); transition: transform .22s ease-in; }
+  .pet { position: absolute; top: -53px; right: 26px; width: 95px; height: 53px; padding: 0; border: 0; background: none; cursor: pointer; z-index: 3; -webkit-tap-highlight-color: transparent; }
+  .tool .pet img { position: absolute; left: 0; top: 0; width: 95px; height: 53px; max-width: none; background: transparent; aspect-ratio: auto; display: block; pointer-events: none; }
+  .tool .pet img.wave { visibility: hidden; }
+  .pet:hover img.wave, .pet:focus-visible img.wave, .pet.on img.wave { visibility: visible; }
+  .pet:hover img.idle, .pet:focus-visible img.idle, .pet.on img.idle { visibility: hidden; }
   .pet-say { position: absolute; top: -92px; right: 10px; z-index: 4; background: var(--card); color: var(--ink); border: 1px solid var(--line); border-radius: 12px; padding: 5px 10px; font-size: 13px; font-weight: 700; box-shadow: var(--shadow); opacity: 0; transform: translateY(6px); transition: opacity .2s, transform .2s; pointer-events: none; white-space: nowrap; }
   .pet-say.on { opacity: 1; transform: none; }
-  @media (prefers-reduced-motion: reduce) { .pet img, .pet.duck img { transition: none } }
   .pill.lang { padding: 6px 14px; cursor: pointer; }
   h2[data-i18n] { margin-bottom: 18px; }
   .tool h3 small { display: block; margin: 2px 0 0; }
@@ -154,7 +154,7 @@
   <div class="grid">
 
     <article class="tool has-pet">
-      <button class="pet" type="button" aria-label="Blink"><img src="assets/blink-peek.png" alt="" width="92" height="53"></button>
+      <button class="pet" type="button" aria-label="Blink"><img class="idle" src="assets/blink-peek.png" alt="" width="95" height="53"><img class="wave" src="assets/blink-wave.png" alt="" width="95" height="53"></button>
       <span class="pet-say" role="status" aria-live="polite"></span>
       <div class="media fill top"><img src="assets/demo/blinkling.gif" alt="Blinkling demo" loading="lazy"></div>
       <div class="body">
@@ -246,13 +246,9 @@
   const lines = ["Hi!", "Ctrl + click!", "Ask me anything", "Psst, try it", "I live on your screen"];
   let petTimer, petN = 0;
   pet.addEventListener("click", () => {
-    if (pet.classList.contains("duck")) return;
-    pet.classList.add("duck"); say.classList.remove("on");
-    setTimeout(() => {
-      pet.classList.remove("duck");
-      say.textContent = lines[petN++ % lines.length]; say.classList.add("on");
-      clearTimeout(petTimer); petTimer = setTimeout(() => say.classList.remove("on"), 1800);
-    }, 650);
+    pet.classList.add("on");
+    say.textContent = lines[petN++ % lines.length]; say.classList.add("on");
+    clearTimeout(petTimer); petTimer = setTimeout(() => { say.classList.remove("on"); pet.classList.remove("on") }, 1800);
   });
   // Live star counts from the GitHub API; the markup keeps a fallback.
   const fmt = n => n >= 1000 ? (n / 1000).toFixed(1).replace(/\.0$/, "") + "k" : String(n);
