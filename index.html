@@ -100,6 +100,22 @@
   .tool .media { width: 100%; aspect-ratio: 16 / 9; background: #14110e; display: flex; align-items: center; justify-content: center; overflow: hidden; }
   .tool .media img { width: 100%; height: 100%; object-fit: contain; aspect-ratio: auto; background: transparent; }
   .tool .media.fill img { object-fit: cover; }
+  .grid { padding-top: 44px; }
+  .tool.has-pet { overflow: visible; position: relative; }
+  .tool.has-pet .media { border-radius: 18px 18px 0 0; }
+  .tool .media.fill.top img { object-position: 50% 85%; }
+  .pet { position: absolute; top: -46px; right: 22px; width: 104px; height: 74px; padding: 0; border: 0; background: none; cursor: pointer; z-index: 3; transform-origin: 50% 100%; animation: pet-bob 3.6s ease-in-out infinite; -webkit-tap-highlight-color: transparent; }
+  .pet img { width: 100%; height: 100%; display: block; object-fit: contain; object-position: bottom; pointer-events: none; }
+  .pet:hover { animation: pet-wiggle .7s ease-in-out infinite; }
+  .pet:hover::after { content: "\2665"; position: absolute; top: -8px; left: -6px; color: var(--accent); font-size: 16px; animation: pet-heart 1s ease-out infinite; }
+  .pet.squish { animation: pet-squish .45s ease-out; }
+  .pet-say { position: absolute; top: -78px; right: 8px; z-index: 4; background: var(--card); color: var(--ink); border: 1px solid var(--line); border-radius: 12px; padding: 5px 10px; font-size: 13px; font-weight: 700; box-shadow: var(--shadow); opacity: 0; transform: translateY(6px); transition: opacity .2s, transform .2s; pointer-events: none; white-space: nowrap; }
+  .pet-say.on { opacity: 1; transform: none; }
+  @keyframes pet-bob { 0%, 100% { transform: translateY(0) } 50% { transform: translateY(-3px) } }
+  @keyframes pet-wiggle { 0%, 100% { transform: rotate(-4deg) } 50% { transform: rotate(4deg) } }
+  @keyframes pet-heart { from { opacity: 1; transform: translateY(0) } to { opacity: 0; transform: translateY(-14px) } }
+  @keyframes pet-squish { 0% { transform: scale(1, 1) } 30% { transform: scale(1.12, .8) } 60% { transform: scale(.94, 1.1) } 100% { transform: scale(1, 1) } }
+  @media (prefers-reduced-motion: reduce) { .pet, .pet:hover, .pet:hover::after { animation: none } }
   .pill.lang { padding: 6px 14px; cursor: pointer; }
   h2[data-i18n] { margin-bottom: 18px; }
   .tool h3 small { display: block; margin: 2px 0 0; }
@@ -142,8 +158,10 @@
   <h2 data-i18n="projects">Projects</h2>
   <div class="grid">
 
-    <article class="tool">
-      <div class="media"><img src="assets/demo/blinkling.gif" alt="Blinkling demo" loading="lazy"></div>
+    <article class="tool has-pet">
+      <button class="pet" type="button" aria-label="Blink"><img src="assets/blink-peek.png" alt="" width="104" height="74"></button>
+      <span class="pet-say" role="status" aria-live="polite"></span>
+      <div class="media fill top"><img src="assets/demo/blinkling.gif" alt="Blinkling demo" loading="lazy"></div>
       <div class="body">
         <div class="top"><h3>Blinkling<span class="badge-new" data-i18n="new">NEW</span><small data-i18n="blinkling.n"></small></h3><span class="stars" data-repo="Arthur031221/Blinkling">★</span></div>
         <p data-i18n="blinkling.d">Hold Ctrl, click a paragraph, and Blink explains it beside your page. Mirrors your Claude Code terminal.</p>
@@ -229,6 +247,14 @@
   try { saved = localStorage.getItem("lang") || "en"; } catch (e) { /* private mode */ }
   document.getElementById("lang").addEventListener("change", e => setLang(e.target.value));
   setLang(saved);
+  const pet = document.querySelector(".pet"), say = document.querySelector(".pet-say");
+  const lines = ["Hi!", "Ctrl + click!", "Ask me anything", "Psst, try it", "I live on your screen"];
+  let petTimer, petN = 0;
+  pet.addEventListener("click", () => {
+    pet.classList.remove("squish"); void pet.offsetWidth; pet.classList.add("squish");
+    say.textContent = lines[petN++ % lines.length]; say.classList.add("on");
+    clearTimeout(petTimer); petTimer = setTimeout(() => say.classList.remove("on"), 1800);
+  });
   // Live star counts from the GitHub API; the markup keeps a fallback.
   const fmt = n => n >= 1000 ? (n / 1000).toFixed(1).replace(/\.0$/, "") + "k" : String(n);
   document.querySelectorAll("[data-repo]").forEach(async el => {
